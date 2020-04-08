@@ -9,6 +9,8 @@
         "generate": "nuxt generate"
     },
     "dependencies": {
+        "axios": "^0.19.2",
+        "countup.js": "^2.0.4",
         "nuxt": "^2.12.2"
     },
     "devDependencies": {
