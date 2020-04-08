@@ -4,7 +4,9 @@
     "description": "COVID-19 cases analyze and visualization",
     "author": "Sean Chen",
     "scripts": {
-        "dev": "nuxt"
+        "dev": "nuxt",
+        "build": "nuxt build",
+        "generate": "nuxt generate"
     },
     "dependencies": {
         "nuxt": "^2.12.2"
