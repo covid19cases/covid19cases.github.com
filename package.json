@@ -1,0 +1,9 @@
+{
+    "name": "covid-19",
+    "version": "0.0.1",
+    "description": "COVID-19 cases analyze and visualization",
+    "author": "Sean Chen",
+    "scripts": {
+        "dev": "nuxt"
+    }
+}
