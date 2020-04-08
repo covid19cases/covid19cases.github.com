@@ -5,5 +5,8 @@
     "author": "Sean Chen",
     "scripts": {
         "dev": "nuxt"
+    },
+    "dependencies": {
+        "nuxt": "^2.12.2"
     }
 }
