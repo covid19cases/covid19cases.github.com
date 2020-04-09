@@ -59,12 +59,21 @@ v-container( grid-list-xs )
   v-card
     v-card-title
       h3 Cases break down by countries
+      v-spacer
+      v-text-field(
+        v-model="tableSearch"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      )
     v-card-text
       v-data-table(
          :headers="headers"
          :items="cases"
          :items-per-page="perPage"
          :sortBy="sortBy"
+         :search="tableSearch"
          sortDesc
       )
         // set the number format.
@@ -130,7 +139,10 @@ export default {
 
             // refresh timer, in seconds.
             timerAmount: 120,
-            timer: 120
+            timer: 120,
+
+            // for data table search.
+            tableSearch: ''
         };
     },
 
