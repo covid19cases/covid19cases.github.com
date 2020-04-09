@@ -62,10 +62,11 @@ v-container( grid-list-xs )
       v-spacer
       v-text-field(
         v-model="tableSearch"
-        append-icon="mdi-magnify"
+        prepend-inner-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details
+        clearable
       )
     v-card-text
       v-data-table(
