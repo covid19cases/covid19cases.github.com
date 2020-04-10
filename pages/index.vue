@@ -1,5 +1,9 @@
 <template lang="pug">
 v-container( grid-list-xs )
+  v-breadcrumbs( 
+    v-if="filters.length > 0"
+    :items="getBreadcrumbs()"
+  ).pa-0
   h1(class="text-center") {{ pageHead }}
   v-row
     v-col
@@ -272,6 +276,29 @@ export default {
             const mins = (Math.floor(seconds / 60.0) + "").padStart(2, '0');
             const remains = (seconds % 60 + "").padStart(2, '0');
             return mins + ":" + remains;
+        },
+
+        /**
+         * build the bread crumbs.
+         */
+        getBreadcrumbs( ) {
+
+            let items = [
+                {
+                    text: "Global Cases",
+                    disable: false,
+                    href: "/"
+                }
+            ];
+
+            if( this.filters.length > 0 ) {
+                items.push({
+                    text: this.filters[0].value,
+                    disable: false
+                });
+            }
+
+            return items;
         }
     }
 }
