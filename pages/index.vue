@@ -84,6 +84,8 @@ v-container( grid-list-xs )
           | {{ numFormater.format(item.new_confirmed) }}
         template(v-slot:item.death="{ item }")
           | {{ numFormater.format(item.death) }}
+        template(v-slot:item.new_death="{ item }")
+          | {{ numFormater.format(item.new_death) }}
         template(v-slot:item.recovered="{ item }")
           | {{ numFormater.format(item.recovered) }}
 </template>
@@ -143,7 +145,10 @@ export default {
             timer: 120,
 
             // for data table search.
-            tableSearch: ''
+            tableSearch: '',
+
+            // filters.
+            filters: []
         };
     },
 
