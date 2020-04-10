@@ -82,7 +82,11 @@ v-container( grid-list-xs )
          sortDesc
       )
         template(v-slot:item.country_region="{ item }")
-          a( @click="selectCountry(item.country_region)" ) {{ item.country_region }}
+          a( 
+            v-if="item.facet_count > 1"
+            @click="selectCountry(item.country_region)"
+          ) {{ item.country_region }}
+          span( v-else ) {{ item.country_region }}
         // set the number format.
         template(v-slot:item.confirmed="{ item }")
           | {{ numFormater.format(item.confirmed) }}
