@@ -1,6 +1,6 @@
 <template lang="pug">
 v-container( grid-list-xs )
-  h1(class="text-center") COVID-19 Global Cases
+  h1(class="text-center") {{ pageHead }}
   v-row
     v-col
       v-chip(label) {{ timeFormatter.format(currentTime) }}
@@ -58,7 +58,7 @@ v-container( grid-list-xs )
             span(id="newRecoveredId") {{ numFormater.format(total.new_recovered) }}
   v-card
     v-card-title
-      h3 Cases break down by countries
+      h3 {{ dataTableHead }}
       v-spacer
       v-text-field(
         v-model="tableSearch"
@@ -77,6 +77,8 @@ v-container( grid-list-xs )
          :search="tableSearch"
          sortDesc
       )
+        template(v-slot:item.country_region="{ item }")
+          a( @click="selectCountry(item.country_region)" ) {{ item.country_region }}
         // set the number format.
         template(v-slot:item.confirmed="{ item }")
           | {{ numFormater.format(item.confirmed) }}
@@ -105,6 +107,10 @@ export default {
     // data.
     data() {
         return {
+
+            pageHead: "COVID-19 Global Cases",
+
+            dataTableHead: "Cases break down by countries", 
 
             total: {
                 confirmed: 0,
@@ -193,6 +199,9 @@ export default {
                 // reset timer.
                 self.timer = self.timerAmount;
             });
+
+            // reset headers.
+            self.headers = covid.getHeaders();
         },
 
         cleanData() {
@@ -216,6 +225,25 @@ export default {
 
             // reset timer.
             this.timer = this.timerAmount;
+        },
+
+        /**
+         * handle country select.
+         */
+        selectCountry( country ) {
+
+            this.filters[0] = {name: "country", value: country};
+
+            // reload data
+            this.reload();
+
+            // reset search field.
+            this.tableSearch = "";
+
+            // reset page head,
+            this.pageHead = "COVID-19 Cases - " + country;
+            // reset data table head.
+            this.dataTableHead = country + " cases by states";
         },
 
         /**
