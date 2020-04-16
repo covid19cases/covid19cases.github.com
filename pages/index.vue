@@ -23,6 +23,7 @@ v-container( grid-list-xs )
 
   v-progress-linear( :value="(timerAmount - timer) / timerAmount * 100" )
 
+  // Summary row!
   v-row
     v-col(col="4")
       v-card( class="mx-auto"
@@ -60,44 +61,53 @@ v-container( grid-list-xs )
           div New recovered
           div.display-1.white--text
             span(id="newRecoveredId") {{ numFormater.format(total.new_recovered) }}
-  v-card
-    v-card-title
-      h3 {{ dataTableHead }}
-      v-spacer
-      v-text-field(
-        v-model="tableSearch"
-        prepend-inner-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-        clearable
-      )
-    v-card-text
-      v-data-table(
-         :headers="headers"
-         :items="cases"
-         :items-per-page="perPage"
-         :sortBy="sortBy"
-         :search="tableSearch"
-         sortDesc
-      )
-        template(v-slot:item.country_region="{ item }")
-          a( 
-            v-if="item.facet_count > 1"
-            @click="selectCountry(item.country_region)"
-          ) {{ item.country_region }}
-          span( v-else ) {{ item.country_region }}
-        // set the number format.
-        template(v-slot:item.confirmed="{ item }")
-          | {{ numFormater.format(item.confirmed) }}
-        template(v-slot:item.new_confirmed="{ item }")
-          | {{ numFormater.format(item.new_confirmed) }}
-        template(v-slot:item.death="{ item }")
-          | {{ numFormater.format(item.death) }}
-        template(v-slot:item.new_death="{ item }")
-          | {{ numFormater.format(item.new_death) }}
-        template(v-slot:item.recovered="{ item }")
-          | {{ numFormater.format(item.recovered) }}
+
+  v-tabs( centered )
+    v-tab
+      v-icon( left ) mdi-table-large
+    v-tab
+      v-icon( left ) mdi-chart-line
+
+    v-tab-item
+      // data table card.
+      v-card
+        v-card-title
+          h3 {{ dataTableHead }}
+          v-spacer
+          v-text-field(
+            v-model="tableSearch"
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+            clearable
+          )
+        v-card-text
+          v-data-table(
+             :headers="headers"
+             :items="cases"
+             :items-per-page="perPage"
+             :sortBy="sortBy"
+             :search="tableSearch"
+             sortDesc
+          )
+            template(v-slot:item.country_region="{ item }")
+              a( 
+                v-if="item.facet_count > 1"
+                @click="selectCountry(item.country_region)"
+              ) {{ item.country_region }}
+              span( v-else ) {{ item.country_region }}
+            // set the number format.
+            template(v-slot:item.confirmed="{ item }")
+              | {{ numFormater.format(item.confirmed) }}
+            template(v-slot:item.new_confirmed="{ item }")
+              | {{ numFormater.format(item.new_confirmed) }}
+            template(v-slot:item.death="{ item }")
+              | {{ numFormater.format(item.death) }}
+            template(v-slot:item.new_death="{ item }")
+              | {{ numFormater.format(item.new_death) }}
+            template(v-slot:item.recovered="{ item }")
+              | {{ numFormater.format(item.recovered) }}
 </template>
 
 <script>
@@ -118,7 +128,7 @@ export default {
 
             pageHead: "COVID-19 Global Cases",
 
-            dataTableHead: "Cases break down by countries", 
+            dataTableHead: "Cases breakdown by countries", 
 
             total: {
                 confirmed: 0,
