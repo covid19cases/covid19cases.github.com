@@ -67,7 +67,10 @@ v-container( grid-list-xs )
       v-icon( left ) mdi-table-large
     v-tab
       v-icon( left ) mdi-chart-line
+    //v-tab
+      v-icon( left ) mdi-chart-bar
 
+    // data table tab.
     v-tab-item
       // data table card.
       v-card
@@ -108,6 +111,22 @@ v-container( grid-list-xs )
               | {{ numFormater.format(item.new_death) }}
             template(v-slot:item.recovered="{ item }")
               | {{ numFormater.format(item.recovered) }}
+
+    // line chart tab.
+    v-tab-item
+      // line chart card.
+      v-card
+        v-card-title
+          //h3 {{ dataTableHead }}
+          h3 Cases in line chart
+          v-spacer
+          // search country for more details.
+          // use auto-complete component here.
+        v-card-text
+          v-row
+            v-col( cols="3" )
+            v-col( cols="9" )
+              div( id="linechart" )
 </template>
 
 <script>
