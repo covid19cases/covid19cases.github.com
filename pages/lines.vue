@@ -81,9 +81,10 @@ v-container( grid-list-xs )
       // use auto-complete component here.
     v-card-text
       v-row
-        v-col( cols="3" )
-        v-col( cols="9" )
+        v-col( cols="1" )
+        v-col( cols="10" )
           div( id="linechart" )
+        v-col( cols="1" )
 </template>
 
 <script>
@@ -150,7 +151,15 @@ export default {
             tableSearch: '',
 
             // filters.
-            filters: []
+            filters: [],
+
+            // properties for line chart.
+            chartMargin: {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 60
+            }
         };
     },
 
@@ -177,6 +186,8 @@ export default {
         this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
         //console.log(confirmedCount);
 
+        // initialize the svg for chart.
+        covid.initLinesSvg(this, "linechart");
         this.drawChart();
 
     },
@@ -185,18 +196,21 @@ export default {
 
         drawChart() {
 
-            //covid.initLinesSvg(this, 'linechart');
-            console.log(d3.select('#linechart'));
-            // create svg, using 100% of the room!
-            this.svg = d3.select('#linechart').append("svg")
-                .attr("width", "100%")
-                //.attr("height", "100%");
-                //.attr("width", 500)
-                .attr("height", 480);
-                //.call(vuePage.responsivefy);
-            console.log(this.svg);
+            let self = this;
 
-            console.log(document.getElementById('linechart'));
+            if(!self.casesByDay) {
+                // this is the first time.
+                covid.getCasesByDay(self, function() {
+
+                    // setup axes
+                    covid.setupLinesAxes(self, self.casesByDay[1].numbers);
+
+                    // draw lines.
+                    //covid.drawLinesPath(self, self.casesByDay[0].numbers, {color: "orange", width: 1.5});
+                    covid.drawLinesPath(self, self.casesByDay[1].numbers, {color: "red", width: 2});
+                    //covid.drawLinesPath(self, self.casesByDay[2].numbers, {color: "green", width: 1.5});
+                });
+            }
         },
 
         reload() {
