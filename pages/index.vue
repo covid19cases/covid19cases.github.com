@@ -110,20 +110,6 @@ v-container( grid-list-xs )
           | {{ numFormater.format(item.new_death) }}
         template(v-slot:item.recovered="{ item }")
           | {{ numFormater.format(item.recovered) }}
-
-  // line chart card.
-  v-card
-    v-card-title
-      //h3 {{ dataTableHead }}
-      h3 Cases in line chart
-      v-spacer
-      // search country for more details.
-      // use auto-complete component here.
-    v-card-text
-      v-row
-        v-col( cols="3" )
-        v-col( cols="9" )
-          div( id="linechart" )
 </template>
 
 <script>
@@ -216,28 +202,9 @@ export default {
         this.deathCount = new CountUp( "deathId", this.total.death);
         this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
         //console.log(confirmedCount);
-
-        this.drawChart();
-
     },
 
     methods: {
-
-        drawChart() {
-
-            //covid.initLinesSvg(this, 'linechart');
-            console.log(d3.select('#linechart'));
-            // create svg, using 100% of the room!
-            this.svg = d3.select('#linechart').append("svg")
-                .attr("width", "100%")
-                //.attr("height", "100%");
-                //.attr("width", 500)
-                .attr("height", 480);
-                //.call(vuePage.responsivefy);
-            console.log(this.svg);
-
-            console.log(document.getElementById('linechart'));
-        },
 
         reload() {
 
