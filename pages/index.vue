@@ -114,8 +114,6 @@ v-container( grid-list-xs )
 
 <script>
 
-import * as d3 from "d3";
-
 import covid from '@/libs/covid19.js';
 import {CountUp} from 'countup.js';
 
