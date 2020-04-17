@@ -62,74 +62,73 @@ v-container( grid-list-xs )
           div.display-1.white--text
             span(id="newRecoveredId") {{ numFormater.format(total.new_recovered) }}
 
-  v-tabs( centered )
-    v-tab
-      v-icon( left ) mdi-table-large
-    v-tab
-      v-icon( left ) mdi-chart-line
-    //v-tab
-      v-icon( left ) mdi-chart-bar
+  // using toolbar for navigation
+  v-toolbar( dense ).mb-2
+    v-spacer
+    v-btn( icon to="/" nuxt )
+      v-icon mdi-table-large
+    v-btn( icon to="/lines" nuxt )
+      v-icon mdi-chart-line
+    v-spacer
 
-    // data table tab.
-    v-tab-item
-      // data table card.
-      v-card
-        v-card-title
-          h3 {{ dataTableHead }}
-          v-spacer
-          v-text-field(
-            v-model="tableSearch"
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-            clearable
-          )
-        v-card-text
-          v-data-table(
-             :headers="headers"
-             :items="cases"
-             :items-per-page="perPage"
-             :sortBy="sortBy"
-             :search="tableSearch"
-             sortDesc
-          )
-            template(v-slot:item.country_region="{ item }")
-              a( 
-                v-if="item.facet_count > 1"
-                @click="selectCountry(item.country_region)"
-              ) {{ item.country_region }}
-              span( v-else ) {{ item.country_region }}
-            // set the number format.
-            template(v-slot:item.confirmed="{ item }")
-              | {{ numFormater.format(item.confirmed) }}
-            template(v-slot:item.new_confirmed="{ item }")
-              | {{ numFormater.format(item.new_confirmed) }}
-            template(v-slot:item.death="{ item }")
-              | {{ numFormater.format(item.death) }}
-            template(v-slot:item.new_death="{ item }")
-              | {{ numFormater.format(item.new_death) }}
-            template(v-slot:item.recovered="{ item }")
-              | {{ numFormater.format(item.recovered) }}
+  // data table card.
+  v-card
+    v-card-title
+      h3 {{ dataTableHead }}
+      v-spacer
+      v-text-field(
+        v-model="tableSearch"
+        prepend-inner-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+        clearable
+      )
+    v-card-text
+      v-data-table(
+         :headers="headers"
+         :items="cases"
+         :items-per-page="perPage"
+         :sortBy="sortBy"
+         :search="tableSearch"
+         sortDesc
+      )
+        template(v-slot:item.country_region="{ item }")
+          a( 
+            v-if="item.facet_count > 1"
+            @click="selectCountry(item.country_region)"
+          ) {{ item.country_region }}
+          span( v-else ) {{ item.country_region }}
+        // set the number format.
+        template(v-slot:item.confirmed="{ item }")
+          | {{ numFormater.format(item.confirmed) }}
+        template(v-slot:item.new_confirmed="{ item }")
+          | {{ numFormater.format(item.new_confirmed) }}
+        template(v-slot:item.death="{ item }")
+          | {{ numFormater.format(item.death) }}
+        template(v-slot:item.new_death="{ item }")
+          | {{ numFormater.format(item.new_death) }}
+        template(v-slot:item.recovered="{ item }")
+          | {{ numFormater.format(item.recovered) }}
 
-    // line chart tab.
-    v-tab-item
-      // line chart card.
-      v-card
-        v-card-title
-          //h3 {{ dataTableHead }}
-          h3 Cases in line chart
-          v-spacer
-          // search country for more details.
-          // use auto-complete component here.
-        v-card-text
-          v-row
-            v-col( cols="3" )
-            v-col( cols="9" )
-              div( id="linechart" )
+  // line chart card.
+  v-card
+    v-card-title
+      //h3 {{ dataTableHead }}
+      h3 Cases in line chart
+      v-spacer
+      // search country for more details.
+      // use auto-complete component here.
+    v-card-text
+      v-row
+        v-col( cols="3" )
+        v-col( cols="9" )
+          div( id="linechart" )
 </template>
 
 <script>
+
+import * as d3 from "d3";
 
 import covid from '@/libs/covid19.js';
 import {CountUp} from 'countup.js';
@@ -217,9 +216,28 @@ export default {
         this.deathCount = new CountUp( "deathId", this.total.death);
         this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
         //console.log(confirmedCount);
+
+        this.drawChart();
+
     },
 
     methods: {
+
+        drawChart() {
+
+            //covid.initLinesSvg(this, 'linechart');
+            console.log(d3.select('#linechart'));
+            // create svg, using 100% of the room!
+            this.svg = d3.select('#linechart').append("svg")
+                .attr("width", "100%")
+                //.attr("height", "100%");
+                //.attr("width", 500)
+                .attr("height", 480);
+                //.call(vuePage.responsivefy);
+            console.log(this.svg);
+
+            console.log(document.getElementById('linechart'));
+        },
 
         reload() {
 
