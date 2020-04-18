@@ -88,8 +88,9 @@ v-container( grid-list-xs )
             v-for="(cat, index) in cats"
             :key="index"
             v-model="selectedCats"
-            :label="cat.toUpperCase()"
-            :value="cat"
+            :color="cat.color"
+            :label="cat.name.toUpperCase()"
+            :value="cat.name"
           )
 </template>
 
@@ -162,7 +163,11 @@ export default {
             // likely we will use the 100% for what ever width we can get!
 
             // categories and selected categories.
-            cats: ["confirmed", "death", "recovered"],
+            cats: [
+                {name: "confirmed", color: "warning"},
+                {name: "death", color: "error"},
+                {name: "recovered", color: "success"}
+            ],
             selectedCats: ["confirmed", "death", "recovered"]
         };
     },
