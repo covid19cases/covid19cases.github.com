@@ -81,10 +81,16 @@ v-container( grid-list-xs )
       // use auto-complete component here.
     v-card-text
       v-row
-        v-col( cols="1" )
         v-col( cols="10" )
           div( id="linechart" )
-        v-col( cols="1" )
+        v-col( cols="2" )
+          v-checkbox(
+            v-for="(cat, index) in cats"
+            :key="index"
+            v-model="selectedCats"
+            :label="cat.toUpperCase()"
+            :value="cat"
+          )
 </template>
 
 <script>
@@ -107,8 +113,6 @@ export default {
 
             pageHead: "COVID-19 Global Cases",
 
-            dataTableHead: "Cases breakdown by countries", 
-
             total: {
                 confirmed: 0,
                 death: 0,
@@ -118,15 +122,9 @@ export default {
                 "new_recovered": 0
             },
 
-            // items per page.
-            perPage: 15,
-            sortBy: ["confirmed"],
-
-            cases: [],
+            //casesByDay: [],
 
             lastUpdated: null,
-
-            headers: covid.getHeaders(),
 
             currentTime: new Date(),
             numFormater: new Intl.NumberFormat('en-US'),
@@ -155,11 +153,17 @@ export default {
 
             // properties for line chart.
             chartMargin: {
-                top: 20,
+                top: 5,
                 right: 20,
                 bottom: 30,
                 left: 60
-            }
+            },
+            // TODO: how to decide the height of the char?
+            // likely we will use the 100% for what ever width we can get!
+
+            // categories and selected categories.
+            cats: ["confirmed", "death", "recovered"],
+            selectedCats: ["confirmed", "death", "recovered"]
         };
     },
 
@@ -181,14 +185,12 @@ export default {
 
     mounted() {
 
+        this.drawChart();
+
         this.confirmedCount = new CountUp( "confirmedId", this.total.confirmed );
         this.deathCount = new CountUp( "deathId", this.total.death);
         this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
         //console.log(confirmedCount);
-
-        // initialize the svg for chart.
-        covid.initLinesSvg(this, "linechart");
-        this.drawChart();
 
     },
 
@@ -198,19 +200,31 @@ export default {
 
             let self = this;
 
-            if(!self.casesByDay) {
-                // this is the first time.
+            // remove the existing svg
+            d3.selectAll("svg").remove();
+            // initialize the svg for chart.
+            covid.initLinesSvg(this, "linechart");
+
+            //if(!self.casesByDay) {
+                // this is the first time to load this page.
+                //  - get the up to date data.
                 covid.getCasesByDay(self, function() {
 
-                    // setup axes
-                    covid.setupLinesAxes(self, self.casesByDay[1].numbers);
+                    // setup axes based on the biggest cases set.
+                    covid.setupLinesAxes(self, self.casesByDay[0].numbers);
 
-                    // draw lines.
-                    //covid.drawLinesPath(self, self.casesByDay[0].numbers, {color: "orange", width: 1.5});
-                    covid.drawLinesPath(self, self.casesByDay[1].numbers, {color: "red", width: 2});
-                    //covid.drawLinesPath(self, self.casesByDay[2].numbers, {color: "green", width: 1.5});
+                    // draw all lines by default.
+                    covid.drawLinesPath(self, self.casesByDay[0].numbers,
+                        // TODO: make the stroke more easier to use.
+                        {color: "orange", width: 1.5});
+                    covid.drawLinesPath(self, self.casesByDay[1].numbers,
+                        {color: "red", width: 2});
+                    covid.drawLinesPath(self, self.casesByDay[2].numbers,
+                        {color: "green", width: 1.5});
                 });
-            }
+            //} else {
+                // customer drived change.
+            //}
         },
 
         reload() {
@@ -229,8 +243,7 @@ export default {
                 self.timer = self.timerAmount;
             });
 
-            // reset headers.
-            self.headers = covid.getHeaders();
+            self.drawChart();
         },
 
         cleanData() {
@@ -244,8 +257,6 @@ export default {
                 "new_death": 0,
                 "new_recovered": 0
             }
-            // reset cases.
-            this.cases = [];
             this.lastUpdated = null;
             // reset count.
             this.confirmedCount.reset();
@@ -254,6 +265,9 @@ export default {
 
             // reset timer.
             this.timer = this.timerAmount;
+
+            // reset cases by day.
+            //this.casesByDay = null;
         },
 
         /**
