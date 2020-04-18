@@ -75,7 +75,7 @@ v-container( grid-list-xs )
   v-card
     v-card-title
       //h3 {{ dataTableHead }}
-      h3 Cases in line chart
+      h3 Global Cases in Line Chart
       v-spacer
       // search country for more details.
       // use auto-complete component here.
@@ -184,7 +184,7 @@ export default {
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
 
-            setInterval( () => self.clockTick(), 1 * 1000 );
+            self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
         });
     },
 
@@ -251,7 +251,12 @@ export default {
             self.drawChart();
         },
 
+        /**
+         * Reset page state.
+         */
         cleanData() {
+
+            let self = this;
 
             // clean total.
             this.total = {
@@ -273,6 +278,13 @@ export default {
 
             // reset cases by day.
             //this.casesByDay = null;
+
+            // clean clock interval.
+            if(this.clockInterval) {
+
+                clearInterval(self.clockInterval);
+                self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
+            }
         },
 
         /**
