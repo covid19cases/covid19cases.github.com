@@ -123,8 +123,6 @@ export default {
                 "new_recovered": 0
             },
 
-            //casesByDay: [],
-
             lastUpdated: null,
 
             currentTime: new Date(),
@@ -184,6 +182,8 @@ export default {
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
 
+            if(self.clockInterval)
+                clearInterval(self.clockInterval);
             self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
         });
     },
@@ -206,30 +206,22 @@ export default {
             let self = this;
 
             // remove the existing svg
+            // welcome only have one SVG element.
             d3.selectAll("svg").remove();
             // initialize the svg for chart.
             covid.initLinesSvg(this, "linechart");
 
-            //if(!self.casesByDay) {
+            if(!self.casesByDay) {
                 // this is the first time to load this page.
                 //  - get the up to date data.
                 covid.getCasesByDay(self, function() {
 
-                    // setup axes based on the biggest cases set.
-                    covid.setupLinesAxes(self, self.casesByDay[0].numbers);
-
-                    // draw all lines by default.
-                    covid.drawLinesPath(self, self.casesByDay[0].numbers,
-                        // TODO: make the stroke more easier to use.
-                        {color: "orange", width: 3});
-                    covid.drawLinesPath(self, self.casesByDay[1].numbers,
-                        {color: "red", width: 3});
-                    covid.drawLinesPath(self, self.casesByDay[2].numbers,
-                        {color: "green", width: 3});
+                    covid.drawLineChart(self);
                 });
-            //} else {
+            } else {
                 // customer drived change.
-            //}
+                covid.drawLineChart(self);
+            }
         },
 
         reload() {
