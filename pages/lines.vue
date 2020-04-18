@@ -171,6 +171,17 @@ export default {
     },
 
     /**
+     * watch properties.
+     */
+    watch: {
+
+        selectedCats: function(newCats) {
+
+            this.drawChart();
+        }
+    },
+
+    /**
      */
     created() {
 
@@ -196,7 +207,6 @@ export default {
         this.deathCount = new CountUp( "deathId", this.total.death);
         this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
         //console.log(confirmedCount);
-
     },
 
     methods: {
@@ -269,7 +279,7 @@ export default {
             this.timer = this.timerAmount;
 
             // reset cases by day.
-            //this.casesByDay = null;
+            this.casesByDay = null;
 
             // clean clock interval.
             if(this.clockInterval) {
