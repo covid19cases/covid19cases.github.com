@@ -155,9 +155,9 @@ export default {
             // properties for line chart.
             chartMargin: {
                 top: 5,
-                right: 20,
+                right: 60,
                 bottom: 30,
-                left: 60
+                left: 10
             },
             // TODO: how to decide the height of the char?
             // likely we will use the 100% for what ever width we can get!
@@ -221,11 +221,11 @@ export default {
                     // draw all lines by default.
                     covid.drawLinesPath(self, self.casesByDay[0].numbers,
                         // TODO: make the stroke more easier to use.
-                        {color: "orange", width: 1.5});
+                        {color: "orange", width: 3});
                     covid.drawLinesPath(self, self.casesByDay[1].numbers,
-                        {color: "red", width: 2});
+                        {color: "red", width: 3});
                     covid.drawLinesPath(self, self.casesByDay[2].numbers,
-                        {color: "green", width: 1.5});
+                        {color: "green", width: 3});
                 });
             //} else {
                 // customer drived change.
