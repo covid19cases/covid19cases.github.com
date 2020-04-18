@@ -81,8 +81,6 @@ v-container( grid-list-xs )
       // use auto-complete component here.
     v-card-text
       v-row
-        v-col( cols="10" )
-          div( id="linechart" )
         v-col( cols="2" )
           v-checkbox(
             v-for="(cat, index) in cats"
@@ -92,6 +90,8 @@ v-container( grid-list-xs )
             :label="cat.name.toUpperCase()"
             :value="cat.name"
           )
+        v-col( cols="10" )
+          div( id="linechart" )
 </template>
 
 <script>
