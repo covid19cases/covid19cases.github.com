@@ -79,6 +79,11 @@ v-container( grid-list-xs )
       v-spacer
       // search country for more details.
       // use auto-complete component here.
+      v-autocomplete(
+        v-model="selectedCountry"
+        label="Pick a country:"
+        :items="allCountries"
+      )
     v-card-text
       v-row
         v-col( cols="2" )
@@ -144,8 +149,10 @@ export default {
             timerAmount: 120,
             timer: 120,
 
-            // for data table search.
-            tableSearch: '',
+            // all countries, array of strings
+            allCountries: [],
+            // selected country.
+            selectedCountry: '',
 
             // filters.
             filters: [],
@@ -192,6 +199,11 @@ export default {
             self.confirmedCount.update(self.total.confirmed);
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
+
+            self.allCountries.sort( (a, b) => {
+                return b.count - a.count;
+            });
+            //console.table(self.allCountries);
 
             if(self.clockInterval)
                 clearInterval(self.clockInterval);
@@ -270,6 +282,8 @@ export default {
                 "new_recovered": 0
             }
             this.lastUpdated = null;
+            this.allCountries = [];
+
             // reset count.
             this.confirmedCount.reset();
             this.deathCount.reset();
@@ -357,6 +371,19 @@ export default {
             }
 
             return items;
+        },
+
+        /**
+         * value comparator for autocomplete.
+         *
+         *    :value-comparator="valueCompare"
+         *
+         * it only pass the value instead of the object.
+         */
+        valueCompare(a, b) {
+
+            //console.log("a:", a, "b:", b);
+            return a.count > b.count;
         }
     }
 }
