@@ -184,14 +184,24 @@ export default {
 
         let self = this;
 
-        covid.getCases(this, 0, function() {
+        covid.getCases(self, 0, function() {
 
             self.confirmedCount.update(self.total.confirmed);
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
 
-            setInterval( () => self.clockTick(), 1 * 1000 );
+            if(self.clockInterval)
+                clearInterval(self.clockInterval);
+            self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
         });
+    },
+
+    /**
+     * before destroyed.
+     */
+    beforeDestroyed() {
+
+        clearInterval(this.clockInterval);
     },
 
     mounted() {
@@ -226,6 +236,8 @@ export default {
 
         cleanData() {
 
+            let self = this;
+
             // clean total.
             this.total = {
                 confirmed: 0,
@@ -245,6 +257,12 @@ export default {
 
             // reset timer.
             this.timer = this.timerAmount;
+
+            if(this.clockInterval) {
+
+                clearInterval(self.clockInterval);
+                self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
+            }
         },
 
         /**
