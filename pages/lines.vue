@@ -211,6 +211,14 @@ export default {
         });
     },
 
+    /**
+     * before destroyed.
+     */
+    beforeDestroyed() {
+
+        clearInterval(this.clockInterval);
+    },
+
     mounted() {
 
         this.drawChart();
