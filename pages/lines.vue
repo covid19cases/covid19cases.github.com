@@ -83,6 +83,8 @@ v-container( grid-list-xs )
         v-model="selectedCountry"
         label="Pick a country:"
         :items="allCountries"
+        prepend-icon="mdi-city"
+        clearable
       )
     v-card-text
       v-row
@@ -182,9 +184,29 @@ export default {
      */
     watch: {
 
+        /**
+         * draw chart again if selected category chaned
+         */
         selectedCats: function(newCats) {
 
             this.drawChart();
+        },
+
+        /**
+         * watch the selected country field.
+         */
+        selectedCountry: function(newCountry) {
+
+            //console.log('new country:', newCountry);
+            // selectedCountry is for a clearable autocomplete field.
+            // when the clear icon clicked, it will set to undefined.
+
+            if(newCountry === undefined)
+                this.filters = [];
+            else
+                this.filters[0] = {name: "country", value: newCountry};
+
+            this.reload();
         }
     },
 
@@ -200,11 +222,10 @@ export default {
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
 
-            self.allCountries.sort( (a, b) => {
-                return b.count - a.count;
-            });
+            self.allCountries = covid.initCountriesList(self);
             //console.table(self.allCountries);
 
+            // initilize the clock tick.
             if(self.clockInterval)
                 clearInterval(self.clockInterval);
             self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
@@ -290,7 +311,6 @@ export default {
                 "new_recovered": 0
             }
             this.lastUpdated = null;
-            this.allCountries = [];
 
             // reset count.
             this.confirmedCount.reset();
