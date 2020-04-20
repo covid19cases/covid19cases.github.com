@@ -75,7 +75,7 @@ v-container( grid-list-xs )
   v-card
     v-card-title
       //h3 {{ dataTableHead }}
-      h3 Global Cases in Line Chart
+      h3 {{ lineChartHead }}
       v-spacer
       // search country for more details.
       // use auto-complete component here.
@@ -120,6 +120,7 @@ export default {
         return {
 
             pageHead: "COVID-19 Global Cases",
+            lineChartHead: "Global Cases in Line Chart",
 
             total: {
                 confirmed: 0,
@@ -201,10 +202,18 @@ export default {
             // selectedCountry is for a clearable autocomplete field.
             // when the clear icon clicked, it will set to undefined.
 
-            if(newCountry === undefined)
+            if(newCountry === undefined) {
                 this.filters = [];
-            else
+            
+                // reset page head,
+                this.pageHead = "COVID-19 Global Cases";
+                this.lineChartHead = "Global Cases in Line Chart";
+            } else {
                 this.filters[0] = {name: "country", value: newCountry};
+                // reset page head,
+                this.pageHead = "COVID-19 Cases - " + newCountry;
+                this.lineChartHead = newCountry + " Cases in Line Chart";
+            }
 
             this.reload();
         }
@@ -387,7 +396,7 @@ export default {
                 {
                     text: "Global Cases",
                     disable: false,
-                    href: "/"
+                    href: "/lines"
                 }
             ];
 
