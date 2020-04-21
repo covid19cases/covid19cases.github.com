@@ -63,15 +63,7 @@ v-container( grid-list-xs )
             span(id="newRecoveredId") {{ numFormater.format(total.new_recovered) }}
 
   // using toolbar for navigation
-  v-toolbar( dense ).mb-2
-    v-spacer
-    v-btn( icon to="/" nuxt color="primary")
-      v-icon mdi-table-large
-    v-btn( icon to="/lines" nuxt color="primary")
-      v-icon mdi-chart-line
-    v-btn( icon to="/mlines" nuxt color="primary")
-      v-icon mdi-chart-multiline
-    v-spacer
+  nav-bar
 
   // data table card.
   v-card
@@ -119,12 +111,17 @@ v-container( grid-list-xs )
 import covid from '@/libs/covid19.js';
 import {CountUp} from 'countup.js';
 
+import NavBar from '@/components/nav-bar.vue';
+
 export default {
 
     //auth: false,
     //layout: default,
 
     // components.
+    components: {
+        'nav-bar': NavBar
+    },
 
     // data.
     data() {
