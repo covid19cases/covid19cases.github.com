@@ -37,6 +37,7 @@ v-container( grid-list-xs )
         prepend-icon="mdi-city"
         chips
         small-chips
+        clearable
       )
         template( v-slot:selection="data" )
           v-chip(
@@ -117,7 +118,7 @@ export default {
             // all countries, array of strings
             allCountries: [],
             // selected country.
-            selectedCountry: '',
+            selectedCountries: [],
 
             // filters.
             filters: [],
