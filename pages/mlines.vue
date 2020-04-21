@@ -28,12 +28,22 @@ v-container( grid-list-xs )
       // search country for more details.
       // use auto-complete component here.
       v-autocomplete(
-        v-model="selectedCountry"
+        v-model="selectedCountries"
         label="Pick countries:"
         :items="allCountries"
+        multiple
+        @input="selectedCountriesInput = null"
+        :search-input.sync="selectedCountriesInput"
         prepend-icon="mdi-city"
-        clearable
+        chips
+        small-chips
       )
+        template( v-slot:selection="data" )
+          v-chip(
+            close
+            @click:close="removeCountrySelection(data.item)"
+          )
+            | {{ data.item.text }}
     v-card-text
       v-row
         v-col( cols="2" )
@@ -177,13 +187,9 @@ export default {
 
         let self = this;
 
-        covid.getCases(this, 0, function() {
+        covid.initCountriesList(self, function() {
 
-            self.confirmedCount.update(self.total.confirmed);
-            self.deathCount.update(self.total.death);
-            self.recoveredCount.update(self.total.recovered);
-
-            self.allCountries = covid.initCountriesList(self);
+            //self.allCountries;
             //console.table(self.allCountries);
 
             // initilize the clock tick.
