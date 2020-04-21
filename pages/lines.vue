@@ -230,7 +230,7 @@ export default {
             self.deathCount.update(self.total.death);
             self.recoveredCount.update(self.total.recovered);
 
-            self.allCountries = covid.initCountriesList(self);
+            self.allCountries = covid.loadCountriesList(self);
             //console.table(self.allCountries);
 
             // initilize the clock tick.
