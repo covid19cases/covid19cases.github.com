@@ -48,6 +48,7 @@ v-container( grid-list-xs )
             | {{ data.item.text }}
       v-btn(
         color="primary"
+        @click='reload'
       ).ml-2 Update
     v-card-text
       v-row
@@ -120,7 +121,8 @@ export default {
 
             // all countries, array of strings
             allCountries: [],
-            // selected country.
+            // selected countries, multiple autocomplet componet.
+            // it should be an array
             selectedCountries: [],
             selectedCountriesInput: '',
 
@@ -209,13 +211,13 @@ export default {
             if(!self.casesByDay) {
                 // this is the first time to load this page.
                 //  - get the up to date data.
-                covid.getCasesByDay(self, function() {
+                covid.getMultiCasesByDay(self, function() {
 
-                    covid.drawLineChart(self);
+                    covid.drawMLineChart(self);
                 });
             } else {
                 // customer drived change.
-                covid.drawLineChart(self);
+                covid.drawMLineChart(self);
             }
         },
 
@@ -223,7 +225,7 @@ export default {
 
             let self = this;
 
-            self.cleanData();
+            self.clearData();
 
             covid.getCases(this, 0, function() {
 
@@ -237,7 +239,7 @@ export default {
         /**
          * Reset page state.
          */
-        cleanData() {
+        clearData() {
 
             let self = this;
 
