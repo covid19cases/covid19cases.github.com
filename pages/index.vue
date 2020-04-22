@@ -217,7 +217,7 @@ export default {
 
             let self = this;
 
-            self.cleanData();
+            self.clearData();
 
             covid.getCases(this, 0, function() {
 
@@ -233,7 +233,7 @@ export default {
             self.headers = covid.getHeaders();
         },
 
-        cleanData() {
+        clearData() {
 
             let self = this;
 
@@ -256,12 +256,6 @@ export default {
 
             // reset timer.
             this.timer = this.timerAmount;
-
-            if(this.clockInterval) {
-
-                clearInterval(self.clockInterval);
-                self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
-            }
         },
 
         /**
