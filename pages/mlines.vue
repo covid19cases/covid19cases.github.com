@@ -158,31 +158,6 @@ export default {
         selectedCats: function(newCats) {
 
             this.drawChart();
-        },
-
-        /**
-         * watch the selected country field.
-         */
-        selectedCountry: function(newCountry) {
-
-            //console.log('new country:', newCountry);
-            // selectedCountry is for a clearable autocomplete field.
-            // when the clear icon clicked, it will set to undefined.
-
-            if(newCountry === undefined) {
-                this.filters = [];
-            
-                // reset page head,
-                this.pageHead = "COVID-19 Global Cases";
-                this.lineChartHead = "Global Cases in Line Chart";
-            } else {
-                this.filters[0] = {name: "country", value: newCountry};
-                // reset page head,
-                this.pageHead = "COVID-19 Cases - " + newCountry;
-                this.lineChartHead = newCountry + " Cases in Line Chart";
-            }
-
-            this.reload();
         }
     },
 
@@ -194,7 +169,9 @@ export default {
 
         covid.initCountriesList(self, function() {
 
-            //self.allCountries;
+            // set selected countries, the top 10 infected countries.
+            // arrary slice will not change the original array.
+            self.selectedCountries = self.allCountries.slice(0, 10);
             //console.table(self.allCountries);
 
             // initilize the clock tick.
