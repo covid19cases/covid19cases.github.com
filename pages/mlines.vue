@@ -38,6 +38,7 @@ v-container( grid-list-xs )
         chips
         small-chips
         clearable
+        return-object
       )
         template( v-slot:selection="data" )
           v-chip(
@@ -45,6 +46,9 @@ v-container( grid-list-xs )
             @click:close="removeCountrySelection(data.item)"
           )
             | {{ data.item.text }}
+      v-btn(
+        color="primary"
+      ).ml-2 Update
     v-card-text
       v-row
         v-col( cols="2" )
@@ -114,11 +118,14 @@ export default {
             // refresh timer, in seconds.
             timerAmount: 120,
             timer: 120,
+            // clock interval:
+            clockInterval: 0,
 
             // all countries, array of strings
             allCountries: [],
             // selected country.
             selectedCountries: [],
+            selectedCountriesInput: '',
 
             // filters.
             filters: [],
@@ -211,11 +218,6 @@ export default {
     mounted() {
 
         this.drawChart();
-
-        this.confirmedCount = new CountUp( "confirmedId", this.total.confirmed );
-        this.deathCount = new CountUp( "deathId", this.total.death);
-        this.recoveredCount = new CountUp( "recoveredId", this.total.recovered);
-        //console.log(confirmedCount);
     },
 
     methods: {
@@ -251,10 +253,6 @@ export default {
 
             covid.getCases(this, 0, function() {
 
-                self.confirmedCount.update(self.total.confirmed);
-                self.deathCount.update(self.total.death);
-                self.recoveredCount.update(self.total.recovered);
-
                 // reset timer.
                 self.timer = self.timerAmount;
             });
@@ -279,11 +277,6 @@ export default {
                 "new_recovered": 0
             }
             this.lastUpdated = null;
-
-            // reset count.
-            this.confirmedCount.reset();
-            this.deathCount.reset();
-            this.recoveredCount.reset();
 
             // reset timer.
             this.timer = this.timerAmount;
@@ -367,6 +360,18 @@ export default {
             }
 
             return items;
+        },
+
+        /**
+         * handle remove country selection
+         * we will use object for selected countries.
+         */
+        removeCountrySelection: function(country) {
+
+            const index = this.selectedCountries.indexOf(country);
+            // replace one element at index position.
+            if( index >= 0 )
+                this.selectedCountries.splice(index, 1);
         },
 
         /**
