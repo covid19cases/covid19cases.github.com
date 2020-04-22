@@ -19,9 +19,9 @@ v-container( grid-list-xs )
         @click="reload"
       ).ml-2.lighten-4
         v-icon(left) mdi-reload
-        | Refresh in {{ timerFormat(timer) }}
+        | Refresh
 
-  v-progress-linear( :value="(timerAmount - timer) / timerAmount * 100" )
+  v-progress-linear( value="100%" )
 
   // Summary row!
   v-row
@@ -146,11 +146,6 @@ export default {
                     timeZone: 'GMT', timeZoneName: 'short'
                 }
             ),
-
-            // refresh timer, in seconds.
-            timerAmount: 120,
-            timer: 120,
-            clockInterval: 0,
 
             // all countries, array of strings
             allCountries: [],
@@ -345,25 +340,6 @@ export default {
 
             // update current time.
             this.currentTime = new Date();
-
-            // count down timer.
-            if( this.timer > 0 )
-                // count down
-                this.timer --;
-            else
-                // reload page.
-                this.reload();
-        },
-
-        /**
-         * format the given seconds in clock style.
-         */
-        timerFormat( seconds ) {
-
-            // string padStart will add leading 0
-            const mins = (Math.floor(seconds / 60.0) + "").padStart(2, '0');
-            const remains = (seconds % 60 + "").padStart(2, '0');
-            return mins + ":" + remains;
         },
 
         /**
