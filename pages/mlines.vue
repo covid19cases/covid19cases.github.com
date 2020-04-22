@@ -15,9 +15,9 @@ v-container( grid-list-xs )
         @click="reload"
       ).ml-2.lighten-4
         v-icon(left) mdi-reload
-        | Refresh in {{ timerFormat(timer) }}
+        | Refresh
 
-  v-progress-linear( :value="(timerAmount - timer) / timerAmount * 100" )
+  v-progress-linear( value="100%" )
 
   // using toolbar for navigation
   nav-bar.mt-2
@@ -115,9 +115,6 @@ export default {
                 }
             ),
 
-            // refresh timer, in seconds.
-            timerAmount: 120,
-            timer: 120,
             // clock interval:
             clockInterval: 0,
 
@@ -318,14 +315,6 @@ export default {
 
             // update current time.
             this.currentTime = new Date();
-
-            // count down timer.
-            if( this.timer > 0 )
-                // count down
-                this.timer --;
-            else
-                // reload page.
-                this.reload();
         },
 
         /**
