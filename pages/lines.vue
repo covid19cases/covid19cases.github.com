@@ -150,6 +150,7 @@ export default {
             // refresh timer, in seconds.
             timerAmount: 120,
             timer: 120,
+            clockInterval: 0,
 
             // all countries, array of strings
             allCountries: [],
@@ -234,7 +235,7 @@ export default {
             //console.table(self.allCountries);
 
             // initilize the clock tick.
-            if(self.clockInterval)
+            if(self.clockInterval > 0)
                 clearInterval(self.clockInterval);
             self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
         });
@@ -287,7 +288,7 @@ export default {
 
             let self = this;
 
-            self.cleanData();
+            self.clearData();
 
             covid.getCases(this, 0, function() {
 
@@ -305,7 +306,7 @@ export default {
         /**
          * Reset page state.
          */
-        cleanData() {
+        clearData() {
 
             let self = this;
 
@@ -326,36 +327,15 @@ export default {
             this.recoveredCount.reset();
 
             // reset timer.
-            this.timer = this.timerAmount;
+            //this.timer = this.timerAmount;
+
+            // initilize the clock tick.
+            if(self.clockInterval > 0)
+                clearInterval(self.clockInterval);
+            self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
 
             // reset cases by day.
             this.casesByDay = null;
-
-            // clean clock interval.
-            if(this.clockInterval) {
-
-                clearInterval(self.clockInterval);
-                self.clockInterval = setInterval( () => self.clockTick(), 1 * 1000 );
-            }
-        },
-
-        /**
-         * handle country select.
-         */
-        selectCountry( country ) {
-
-            this.filters[0] = {name: "country", value: country};
-
-            // reload data
-            this.reload();
-
-            // reset search field.
-            this.tableSearch = "";
-
-            // reset page head,
-            this.pageHead = "COVID-19 Cases - " + country;
-            // reset data table head.
-            this.dataTableHead = country + " cases by states";
         },
 
         /**
