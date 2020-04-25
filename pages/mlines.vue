@@ -25,31 +25,34 @@ v-container( grid-list-xs )
   // line chart card.
   v-card
     v-card-title
-      // search country for more details.
-      // use auto-complete component here.
-      v-autocomplete(
-        v-model="selectedCountries"
-        label="Pick countries:"
-        :items="allCountries"
-        multiple
-        @input="selectedCountriesInput = null"
-        :search-input.sync="selectedCountriesInput"
-        prepend-icon="mdi-city"
-        chips
-        small-chips
-        clearable
-        return-object
-      )
-        template( v-slot:selection="data" )
-          v-chip(
-            close
-            @click:close="removeCountrySelection(data.item)"
+      v-row
+        v-col( cols="10" )
+          // search country for more details.
+          // use auto-complete component here.
+          v-autocomplete(
+            v-model="selectedCountries"
+            label="Pick countries:"
+            :items="allCountries"
+            multiple
+            @input="selectedCountriesInput = null"
+            :search-input.sync="selectedCountriesInput"
+            prepend-icon="mdi-city"
+            chips
+            small-chips
+            clearable
+            return-object
           )
-            | {{ data.item.text }}
-      v-btn(
-        color="primary"
-        @click='reload'
-      ).ml-2 Update
+            template( v-slot:selection="data" )
+              v-chip(
+                close
+                @click:close="removeCountrySelection(data.item)"
+              )
+                | {{ data.item.text }}
+        v-col( cols="2" )
+          v-btn(
+            color="primary"
+            @click='reload'
+          ).ml-2 Update
     v-card-text
       v-row
         v-col( cols="2" )
