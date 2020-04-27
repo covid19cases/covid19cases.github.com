@@ -161,7 +161,7 @@ export default {
         /**
          * draw chart again if selected category chaned
          */
-        selectedCats: function(newCats) {
+        selectedCat: function(newCat) {
 
             this.drawChart();
         }
