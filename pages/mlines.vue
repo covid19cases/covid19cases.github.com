@@ -136,7 +136,7 @@ export default {
             // set margins, the x and y axes will be drawed in margin area.
             chartMargin: {
                 top: 5,
-                right: 60,
+                right: 80,
                 bottom: 30,
                 left: 60
             },
