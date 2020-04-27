@@ -133,11 +133,12 @@ export default {
             filters: [],
 
             // properties for line chart.
+            // set margins, the x and y axes will be drawed in margin area.
             chartMargin: {
                 top: 5,
                 right: 60,
                 bottom: 30,
-                left: 10
+                left: 60
             },
             // TODO: how to decide the height of the char?
             // likely we will use the 100% for what ever width we can get!
