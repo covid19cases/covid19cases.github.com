@@ -56,14 +56,14 @@ v-container( grid-list-xs )
     v-card-text
       v-row
         v-col( cols="2" )
-          v-checkbox(
-            v-for="(cat, index) in cats"
-            :key="index"
-            v-model="selectedCats"
-            :color="cat.color"
-            :label="cat.name.toUpperCase()"
-            :value="cat.name"
-          )
+          v-radio-group( v-model="selectedCat" column )
+            v-radio(
+              v-for="(cat, index) in cats"
+              :key="index"
+              :color="cat.color"
+              :label="cat.name.toUpperCase()"
+              :value="cat.name"
+            )
         v-col( cols="10" )
           div( id="linechart" )
 </template>
@@ -149,7 +149,7 @@ export default {
                 {name: "death", color: "error"},
                 {name: "recovered", color: "success"}
             ],
-            selectedCats: ["confirmed", "death", "recovered"]
+            selectedCat: "confirmed"
         };
     },
 
