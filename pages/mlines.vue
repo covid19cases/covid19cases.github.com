@@ -177,7 +177,7 @@ export default {
 
             // set selected countries, the top 10 infected countries.
             // arrary slice will not change the original array.
-            self.selectedCountries = self.allCountries.slice(0, 10);
+            //self.selectedCountries = self.allCountries.slice(0, 10);
             //console.table(self.allCountries);
 
             // initilize the clock tick.
@@ -340,7 +340,12 @@ export default {
          */
         removeCountrySelection: function(country) {
 
-            const index = this.selectedCountries.indexOf(country);
+            //const index = this.selectedCountries.indexOf(country);
+            const index = this.selectedCountries.findIndex( aCountry => {
+
+                return aCountry.value === country.value;
+            });
+
             // replace one element at index position.
             if( index >= 0 )
                 this.selectedCountries.splice(index, 1);
