@@ -138,7 +138,7 @@ export default {
                 top: 5,
                 right: 80,
                 bottom: 30,
-                left: 60
+                left: 10
             },
             // TODO: how to decide the height of the char?
             // likely we will use the 100% for what ever width we can get!
@@ -146,8 +146,11 @@ export default {
             // categories and selected categories.
             cats: [
                 {name: "confirmed", color: "warning"},
+                {name: "new_confirmed", color: "warning"},
                 {name: "death", color: "error"},
-                {name: "recovered", color: "success"}
+                {name: "new_death", color: "error"},
+                {name: "recovered", color: "success"},
+                {name: "new_recovered", color: "success"}
             ],
             selectedCat: "confirmed"
         };
