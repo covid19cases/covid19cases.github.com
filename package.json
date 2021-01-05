@@ -9,7 +9,7 @@
         "generate": "nuxt generate"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "countup.js": "^2.0.4",
         "d3": "^5.15.1",
         "nuxt": "^2.12.2"
