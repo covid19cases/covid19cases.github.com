@@ -12,7 +12,7 @@
         "axios": "^0.19.2",
         "countup.js": "^2.0.4",
         "d3": "^5.15.1",
-        "nuxt": "^2.12.2"
+        "nuxt": "^2.15.8"
     },
     "devDependencies": {
         "@nuxtjs/axios": "^5.9.7",
